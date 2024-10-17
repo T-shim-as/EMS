@@ -1,16 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1 class="mb-4">案件一覧</h1>
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <a href="{% url 'project_create' %}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> 新規案件追加
-      </a>
-    </div>
-    <div class="col-md-6">
+  <div class="row px-1">
+    <h1 class="col-6 mb-3">案件一覧</h1>
+    <div class="col-6 mt-3">
       <form method="get" class="form-inline justify-content-end">
-        <select name="status" class="form-control mr-2">
-          <option value="">全てのステータス</option>
+        <select name="status" class="form-control mr-1">
+          <option value=""></option>
           {% for value, label in status_choices %}
             <option value="{{ value }}" {% if value == selected_status %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
@@ -21,7 +16,7 @@
   </div>
   <div class="list-group">
     {% for project in projects %}
-      <div class="list-group-item">
+      <div class="list-group-item mb-2">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">
             <a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a>
@@ -29,9 +24,9 @@
           <small>期間：{{ project.start_date|date:"y/m/d" }} ～ {% if project.end_date %}{{ project.end_date|date:"y/m/d" }}{% else %}未定{% endif %}</small>
         </div>
         <p class="mb-1">{{ project.description|truncatewords:20 }}</p>
-        <form class="status-form" data-project-id="{{ project.pk }}">
+        <form class="status-form float-right" data-project-id="{{ project.pk }}">
           {% csrf_token %}
-          <label for="status-{{ project.pk }}">ステータス:</label>
+          <label for="status-{{ project.pk }}">状態:</label>
           <select id="status-{{ project.pk }}" name="status" class="form-control-sm">
             {% for value, label in project.status_choices %}
               <option value="{{ value }}" {% if value == project.status %}selected{% endif %}>{{ label }}</option>
@@ -44,6 +39,11 @@
         <p>案件がありません。</p>
       </div>
     {% endfor %}
+  </div>
+  <div class="float-right mr-1">
+    <a href="{% url 'project_create' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> 案件追加
+    </a>
   </div>
 {% endblock %}
 
