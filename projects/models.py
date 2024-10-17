@@ -4,14 +4,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Project(models.Model):
     name = models.CharField(max_length=200)  # プロジェクト名
     description = models.TextField()  # プロジェクトの説明
-    start_date = models.DateField()  # プロジェクト開始日
     must_skill = models.CharField(max_length=200, null=True, blank=True)  # 必須スキル（オプション） 
     better_skill = models.CharField(max_length=200, null=True, blank=True)  # 尚可スキル（オプション） 
+    start_date = models.DateField()  # プロジェクト開始日
     end_date = models.DateField(null=True, blank=True)  # プロジェクト終了日（オプション）
-    time = models.CharField(max_length=200, null=True, blank=True)  # 勤務時間（オプション）
+    work_time = models.CharField(max_length=200, null=True, blank=True)  # 勤務時間（オプション）
     address = models.CharField(max_length=200, null=True, blank=True)  # 勤務場所
     status = models.CharField(max_length=20, choices=[  # プロジェクトの状態
-        ('proposal', '提案中'),
+        ('proposal', '提案'),
         ('ongoing', '進行中'),
         ('interview', '面談'),
         ('waiting', '結果待ち'),

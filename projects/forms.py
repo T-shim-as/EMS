@@ -7,9 +7,11 @@ class ProjectForm(forms.ModelForm):
         fields = [
             'name',
             'description',
+            'must_skill',
+            'better_skill',
             'start_date',
             'end_date',
-            'time',
+            'work_time',
             'address',
             'status'
             ]
