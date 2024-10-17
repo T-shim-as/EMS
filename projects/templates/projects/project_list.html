@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>案件一覧</h1>
+  <a href="{% url 'project_create' %}" class="btn btn-primary mb-3">新規案件追加</a>
+  <ul class="list-group">
+    {% for project in projects %}
+      <li class="list-group-item">
+        <a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a>
+        ({{ project.get_status_display }})
+      </li>
+    {% empty %}
+      <li class="list-group-item">案件がありません。</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

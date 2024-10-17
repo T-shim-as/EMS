@@ -1,42 +1,32 @@
 from django.db import models
 
 class Project(models.Model):
-    # プロジェクト名
-    name = models.CharField(max_length=200)
-    # プロジェクトの説明
-    description = models.TextField()
-    # プロジェクト開始日
-    start_date = models.DateField()
-    # プロジェクト終了日（オプション）
-    end_date = models.DateField(null=True, blank=True)
-    # プロジェクトの状態
-    status = models.CharField(max_length=20, choices=[
-        ('planning', 'Planning'),
-        ('ongoing', 'Ongoing'),
-        ('completed', 'Completed'),
-        ('on_hold', 'On Hold')
+    name = models.CharField(max_length=200)  # プロジェクト名
+    description = models.TextField()  # プロジェクトの説明
+    start_date = models.DateField()  # プロジェクト開始日
+    end_date = models.DateField(null=True, blank=True)  # プロジェクト終了日（オプション）
+    time = models.TextField(null=True, blank=True)  # 勤務時間（オプション）
+    address = models.TextField(null=True, blank=True)  # 勤務場所（オプション）
+    status = models.CharField(max_length=20, choices=[  # プロジェクトの状態
+        ('proposal', '提案中'),
+        ('ongoing', '進行中'),
+        ('waiting', '結果待ち'),
+        ('confirmed', '確定'),
+        ('failure', '失敗'),
     ])
-    # プロジェクトに割り当てられたエンジニア（多対多の関係）
-    engineers = models.ManyToManyField('accounts.Engineer', through='ProjectAssignment')
 
     def __str__(self):
         return self.name
 
-class ProjectAssignment(models.Model):
-    # プロジェクトへの外部キー
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    # エンジニアへの外部キー
-    engineer = models.ForeignKey('accounts.Engineer', on_delete=models.CASCADE)
-    # プロジェクトでの役割
-    role = models.CharField(max_length=100)
-    # アサイン開始日
-    start_date = models.DateField()
-    # アサイン終了日（オプション）
-    end_date = models.DateField(null=True, blank=True)
+# class ProjectAssignment(models.Model):
+#     project = models.ForeignKey(Project, on_delete=models.CASCADE) # プロジェクトへの外部キー
+#     engineer = models.ForeignKey('accounts.Engineer', on_delete=models.CASCADE) # エンジニアへの外部キー
+#     role = models.CharField(max_length=100) # プロジェクトでの役割
+#     start_date = models.DateField() # アサイン開始日
+#     end_date = models.DateField(null=True, blank=True) # アサイン終了日（オプション）
 
-    class Meta:
-        # プロジェクトとエンジニアの組み合わせはユニークであることを保証
-        unique_together = ('project', 'engineer')
+#     class Meta:
+#         unique_together = ('project', 'engineer') # プロジェクトとエンジニアの組み合わせはユニークであることを保証
 
-    def __str__(self):
-        return f"{self.engineer.user.username} on {self.project.name}"
+#     def __str__(self):
+#         return f"{self.engineer.user.username} on {self.project.name}"

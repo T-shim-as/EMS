@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ project.name }}</h1>
+  <p><strong>説明:</strong> {{ project.description }}</p>
+  <p><strong>開始日:</strong> {{ project.start_date }}</p>
+  <p><strong>終了日:</strong> {{ project.end_date|default:"未定" }}</p>
+  <p><strong>ステータス:</strong> {{ project.get_status_display }}</p>
+  <a href="{% url 'project_update' project.pk %}" class="btn btn-secondary">編集</a>
+  <a href="{% url 'project_delete' project.pk %}" class="btn btn-danger">削除</a>
+  <a href="{% url 'project_list' %}" class="btn btn-primary">一覧に戻る</a>
+{% endblock %}
