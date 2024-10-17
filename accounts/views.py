@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Engineer
 
-# Create your views here.
+class EngineerListView(ListView):
+    model = Engineer
+    template_name = 'accounts/engineer_list.html'
+    context_object_name = 'engineers'

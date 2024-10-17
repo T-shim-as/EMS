@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #以下追加分
+    'accounts',
+    'skills',
+    'projects',
+    'reports',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +85,8 @@ DATABASES = {
     }
 }
 
+# カスタムユーザモデル
+AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
