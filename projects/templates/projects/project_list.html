@@ -1,16 +1,67 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-  <h1>案件一覧</h1>
-  <a href="{% url 'project_create' %}" class="btn btn-primary mb-3">新規案件追加</a>
-  <ul class="list-group">
+  <h1 class="mb-4">案件一覧</h1>
+  <a href="{% url 'project_create' %}" class="btn btn-primary mb-3">
+    <i class="fas fa-plus"></i> 新規案件追加
+  </a>
+  <div class="list-group">
     {% for project in projects %}
-      <li class="list-group-item">
-        <a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a>
-        ({{ project.get_status_display }})
-      </li>
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">
+            <a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a>
+          </h5>
+          <small>{{ project.start_date }}</small>
+        </div>
+        <p class="mb-1">{{ project.description|truncatewords:20 }}</p>
+        <form class="status-form" data-project-id="{{ project.pk }}">
+          {% csrf_token %}
+          <label for="status-{{ project.pk }}">ステータス:</label>
+          <select id="status-{{ project.pk }}" name="status" class="form-control-sm">
+            {% for value, label in project.status_choices %}
+              <option value="{{ value }}" {% if value == project.status %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
     {% empty %}
-      <li class="list-group-item">案件がありません。</li>
+      <div class="list-group-item">
+        <p>案件がありません。</p>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const statusForms = document.querySelectorAll('.status-form');
+  statusForms.forEach(form => {
+    const select = form.querySelector('select');
+    select.addEventListener('change', function() {
+      const projectId = form.dataset.projectId;
+      const formData = new FormData(form);
+      fetch(`/project/${projectId}/update-status/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          console.log('ステータスが更新されました');
+        } else {
+          console.error('ステータスの更新に失敗しました');
+        }
+      })
+      .catch(error => console.error('エラー:', error));
+    });
+  });
+});
+</script>
 {% endblock %}

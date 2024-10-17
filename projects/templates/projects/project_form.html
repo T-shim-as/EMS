@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-  <h1>{% if form.instance.pk %}案件の編集{% else %}新規案件の追加{% endif %}</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">保存</button>
-    <a href="{% url 'project_list' %}" class="btn btn-secondary">キャンセル</a>
-  </form>
+  <h1 class="mb-4">{% if form.instance.pk %}案件の編集{% else %}新規案件の追加{% endif %}</h1>
+  <div class="card">
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> 保存
+        </button>
+        <a href="{% url 'project_list' %}" class="btn btn-secondary">
+          <i class="fas fa-times"></i> キャンセル
+        </a>
+      </form>
+    </div>
+  </div>
 {% endblock %}
