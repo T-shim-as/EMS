@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #以下追加分
-    'accounts',
-    'skills',
+    # 'accounts',
+    # 'skills',
     'projects',
-    'reports',
+    # 'reports',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'EMS.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

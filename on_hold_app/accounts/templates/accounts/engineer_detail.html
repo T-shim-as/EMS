@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ engineer.user.username }}の詳細{% endblock %}
+
+{% block content %}
+    <h1>{{ engineer.user.username }}の詳細</h1>
+    <p>Email: {{ engineer.user.email }}</p>
+    <p>電話番号: {{ engineer.user.phone }}</p>
+    <p>誕生日: {{ engineer.birthday }}</p>
+    <p>住所: {{ engineer.address }}</p>
+{% endblock %}
