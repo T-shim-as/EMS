@@ -35,9 +35,9 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
+        <div class="container px-3">
             <a class="navbar-brand" href="{% url 'project_list' %}">
-                <i class="fas fa-project-diagram"></i> 案件管理
+                <i class="fas fa-project-diagram pl-1"></i> 案件管理
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -48,7 +48,7 @@
                         <a class="nav-link" href="{% url 'project_list' %}">案件一覧</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'project_create' %}">新規案件</a>
+                        <a class="nav-link" href="{% url 'project_create' %}">案件新規追加</a>
                     </li>
                 </ul>
             </div>
@@ -62,7 +62,7 @@
 
     <footer class="bg-light py-3 mt-4">
         <div class="container text-center">
-            <span class="text-muted">&copy; 2024 案件管理システム</span>
+            <span class="text-muted">&copy; 2024 案件管理</span>
         </div>
     </footer>
 

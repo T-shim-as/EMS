@@ -11,6 +11,19 @@ class ProjectListView(ListView):
     template_name = 'projects/project_list.html'
     context_object_name = 'projects'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        status = self.request.GET.get('status')
+        if status:
+            queryset = queryset.filter(status=status)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_choices'] = Project._meta.get_field('status').choices
+        context['selected_status'] = self.request.GET.get('status', '')
+        return context
+
 class ProjectDetailView(DetailView):
     model = Project
     template_name = 'projects/project_detail.html'
