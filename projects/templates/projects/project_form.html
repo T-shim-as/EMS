@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <h1 class="mb-4">{% if form.instance.pk %}案件の編集{% else %}新規案件の追加{% endif %}</h1>
+  <h1 class="mb-3">{% if form.instance.pk %}案件の編集{% else %}新規案件の追加{% endif %}</h1>
   <div class="card">
     <div class="card-body">
       <form method="post">
@@ -17,4 +17,21 @@
       </form>
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(function(input) {
+      input.addEventListener('change', function() {
+        var date = new Date(this.value);
+        var formattedDate = date.getFullYear().toString().substr(-2) + '/' + 
+                            ('0' + (date.getMonth() + 1)).slice(-2) + '/' + 
+                            ('0' + date.getDate()).slice(-2);
+        this.nextElementSibling.textContent = formattedDate;
+      });
+    });
+  });
+</script>
 {% endblock %}

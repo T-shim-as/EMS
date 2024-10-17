@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
   <div class="row px-1">
     <h1 class="col-6 mb-3">案件一覧</h1>
@@ -18,7 +19,7 @@
     {% for project in projects %}
       <div class="list-group-item mb-2">
         <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">
+          <h5 class="mb-2">
             <a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a>
           </h5>
           <small>期間：{{ project.start_date|date:"y/m/d" }} ～ {% if project.end_date %}{{ project.end_date|date:"y/m/d" }}{% else %}未定{% endif %}</small>
