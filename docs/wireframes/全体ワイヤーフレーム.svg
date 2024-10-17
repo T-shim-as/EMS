@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200">
+  <style>
+    .title { font: bold 16px sans-serif; }
+    .subtitle { font: 14px sans-serif; }
+    .text { font: 12px sans-serif; }
+  </style>
+  
+  <!-- ダッシュボード -->
+  <g transform="translate(0,0)">
+    <rect x="10" y="10" width="380" height="280" fill="none" stroke="black" />
+    <text x="20" y="30" class="title">ダッシュボード</text>
+    <rect x="20" y="50" width="170" height="100" fill="lightgray" />
+    <text x="30" y="70" class="subtitle">エンジニア総数</text>
+    <text x="30" y="100" class="title">150名</text>
+    <rect x="200" y="50" width="170" height="100" fill="lightgray" />
+    <text x="210" y="70" class="subtitle">案件総数</text>
+    <text x="210" y="100" class="title">25件</text>
+    <rect x="20" y="160" width="350" height="120" fill="lightgray" />
+    <text x="30" y="180" class="subtitle">最近の活動</text>
+    <text x="30" y="200" class="text">・新規エンジニア登録 (2024/10/15)</text>
+    <text x="30" y="220" class="text">・新規案件追加 (2024/10/14)</text>
+    <text x="30" y="240" class="text">・スキルシート更新 (2024/10/13)</text>
+  </g>
+
+  <!-- エンジニア一覧画面 -->
+  <g transform="translate(400,0)">
+    <rect x="10" y="10" width="380" height="280" fill="none" stroke="black" />
+    <text x="20" y="30" class="title">エンジニア一覧</text>
+    <rect x="20" y="50" width="350" height="30" fill="lightgray" />
+    <text x="30" y="70" class="text">検索</text>
+    <line x1="20" y1="90" x2="370" y2="90" stroke="black" />
+    <text x="30" y="110" class="text">名前</text>
+    <text x="150" y="110" class="text">スキル</text>
+    <text x="270" y="110" class="text">ステータス</text>
+    <line x1="20" y1="120" x2="370" y2="120" stroke="black" />
+    <text x="30" y="140" class="text">山田太郎</text>
+    <text x="150" y="140" class="text">Java, Python</text>
+    <text x="270" y="140" class="text">案件中</text>
+    <line x1="20" y1="150" x2="370" y2="150" stroke="black" />
+    <text x="30" y="170" class="text">佐藤花子</text>
+    <text x="150" y="170" class="text">C#, .NET</text>
+    <text x="270" y="170" class="text">待機中</text>
+  </g>
+
+  <!-- エンジニア詳細画面 -->
+  <g transform="translate(0,300)">
+    <rect x="10" y="10" width="380" height="280" fill="none" stroke="black" />
+    <text x="20" y="30" class="title">エンジニア詳細</text>
+    <text x="20" y="60" class="subtitle">山田太郎</text>
+    <text x="20" y="80" class="text">メール: yamada@example.com</text>
+    <text x="20" y="100" class="text">電話: 090-1234-5678</text>
+    <text x="20" y="130" class="subtitle">スキル</text>
+    <rect x="20" y="140" width="80" height="20" fill="lightgray" />
+    <text x="30" y="155" class="text">Java</text>
+    <rect x="110" y="140" width="80" height="20" fill="lightgray" />
+    <text x="120" y="155" class="text">Python</text>
+    <text x="20" y="190" class="subtitle">現在の案件</text>
+    <text x="20" y="210" class="text">A社システム開発 (2024/4 - 2024/9)</text>
+    <rect x="20" y="230" width="100" height="30" fill="none" stroke="black" />
+    <text x="35" y="250" class="text">日報を見る</text>
+    <rect x="130" y="230" width="120" height="30" fill="none" stroke="black" />
+    <text x="140" y="250" class="text">スキルシートを見る</text>
+  </g>
+
+  <!-- 案件管理画面 -->
+  <g transform="translate(400,300)">
+    <rect x="10" y="10" width="380" height="280" fill="none" stroke="black" />
+    <text x="20" y="30" class="title">案件管理</text>
+    <rect x="20" y="50" width="350" height="30" fill="lightgray" />
+    <text x="30" y="70" class="text">案件を追加</text>
+    <line x1="20" y1="90" x2="370" y2="90" stroke="black" />
+    <text x="30" y="110" class="text">案件名</text>
+    <text x="150" y="110" class="text">期間</text>
+    <text x="270" y="110" class="text">ステータス</text>
+    <line x1="20" y1="120" x2="370" y2="120" stroke="black" />
+    <text x="30" y="140" class="text">A社システム開発</text>
+    <text x="150" y="140" class="text">2024/4 - 2024/9</text>
+    <text x="270" y="140" class="text">進行中</text>
+    <line x1="20" y1="150" x2="370" y2="150" stroke="black" />
+    <text x="30" y="170" class="text">B社インフラ構築</text>
+    <text x="150" y="170" class="text">2024/7 - 2024/12</text>
+    <text x="270" y="170" class="text">準備中</text>
+  </g>
+
+  <!-- 日報入力画面 -->
+  <g transform="translate(0,600)">
+    <rect x="10" y="10" width="380" height="280" fill="none" stroke="black" />
+    <text x="20" y="30" class="title">日報入力</text>
+    <text x="20" y="60" class="subtitle">日付: 2024/10/16</text>
+    <text x="20" y="90" class="text">業務内容:</text>
+    <rect x="20" y="100" width="350" height="60" fill="none" stroke="black" />
+    <text x="20" y="180" class="text">課題:</text>
+    <rect x="20" y="190" width="350" height="40" fill="none" stroke="black" />
+    <text x="20" y="250" class="text">翌日の予定:</text>
+    <rect x="20" y="260" width="350" height="40" fill="none" stroke="black" />
+    <rect x="270" y="310" width="100" height="30" fill="none" stroke="black" />
+    <text x="300" y="330" class="text">保存</text>
+  </g>
+</svg>
