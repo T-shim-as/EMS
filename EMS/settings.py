@@ -90,6 +90,16 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tshim$default',
+        'USER': 'tshim',
+        'PASSWORD': 'portfolio',
+        'HOST': 'tshim.mysql.pythonanywhere-services.com',
+    }
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -124,7 +134,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = '/home/yourusername/your-repo-name/static'
+MEDIA_ROOT = '/home/yourusername/your-repo-name/media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
