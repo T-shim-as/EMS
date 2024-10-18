@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b!-8r=mp9q1hk0mgb^za*btzy*%$w!w#c2ce8%x+0vm+_#d!s8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com', 'tshim.pythonanywhere.com']
 
 # asdf
 # Application definition
@@ -130,3 +130,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# CSRF_COOKIE_SECUREをTrueにすることで、誤ってHTTPによりクッキーを送信してしまうのを防ぎます。
+CSRF_COOKIE_SECURE = True
+
+# SESSION_COOKIE_SECUREをTrueにすることで、誤ってHTTPによりセッションクッキーを送信してしまうのを防ぎます。
+SESSION_COOKIE_SECURE = True
+
+# シークレットキーを隠す
+from django.core.management.utils import get_random_secret_key
+SECRET_KEY = get_random_secret_key()
