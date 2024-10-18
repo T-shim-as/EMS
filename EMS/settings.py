@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     # 'accounts',
-    # 'skills',
     'projects',
     # 'reports',
+    # 'skills',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
@@ -80,22 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'EMS.wsgi.application'
 
-
-# Database
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tshim$default',
-        'USER': 'tshim',
-        'PASSWORD': 'portfolio',
-        'HOST': 'tshim.mysql.pythonanywhere-services.com',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -126,18 +110,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-MEDIA_ROOT = '/home/tshim/EMS/media'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -153,3 +125,31 @@ SESSION_COOKIE_SECURE = True
 # シークレットキーを隠す
 from django.core.management.utils import get_random_secret_key
 SECRET_KEY = get_random_secret_key()
+
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+try:
+    from .local_settings import *
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+except:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'tshim$default',
+            'USER': 'tshim',
+            'PASSWORD': 'portfolio',
+            'HOST': 'tshim.mysql.pythonanywhere-services.com',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            }
+        }
+    }
