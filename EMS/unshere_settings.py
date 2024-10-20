@@ -1,1 +1,0 @@
-GOOGLE_MAPS_API_KEY = 'edit your google map API key'
