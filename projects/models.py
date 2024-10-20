@@ -1,22 +1,25 @@
 from django.db import models
+from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Project(models.Model):
-    name = models.CharField(max_length=200)  # プロジェクト名
-    description = models.TextField()  # プロジェクトの説明
-    must_skill = models.CharField(max_length=200, null=True, blank=True)  # 必須スキル（オプション） 
-    better_skill = models.CharField(max_length=200, null=True, blank=True)  # 尚可スキル（オプション） 
-    start_date = models.DateField()  # プロジェクト開始日
-    end_date = models.DateField(null=True, blank=True)  # プロジェクト終了日（オプション）
-    work_time = models.CharField(max_length=200, null=True, blank=True)  # 勤務時間（オプション）
-    address = models.CharField(max_length=200, null=True, blank=True)  # 勤務場所
-    status = models.CharField(max_length=20, choices=[  # プロジェクトの状態
-        ('proposal', '提案'),
-        ('ongoing', '進行中'),
+    name = models.CharField("案件名", max_length=200)
+    description = models.TextField("案件詳細")
+    must_skill = models.CharField("必須スキル", max_length=200, null=True, blank=True)
+    better_skill = models.CharField("尚可スキル", max_length=200, null=True, blank=True)
+    project_period = models.CharField("業務期間", max_length=100, null=True, blank=True) 
+    work_time = models.CharField("勤務時間", max_length=100, null=True, blank=True)
+    address = models.CharField("勤務地", max_length=100, null=True, blank=True)
+    is_telework = models.BooleanField("テレワーク有", default=False)
+    status = models.CharField("状態", max_length=20, choices=[
+        ('proposal', '提案中'),
+        ('offering', '営業中'),
         ('interview', '面談'),
         ('waiting', '結果待ち'),
         ('join', '確定'),
+        ('decline', '辞退'),
     ], default='proposal')
+    created_at = models.DateTimeField("作成日時", auto_now_add=True)  # 案件追加日時
 
     # 案件合致度（業務内容）
     content_match = models.IntegerField(
@@ -41,7 +44,20 @@ class Project(models.Model):
     def status_choices(self):
         return self._meta.get_field('status').choices
 
+    @property
+    def time_since_created(self):
+        now = timezone.now()
+        diff = now - self.created_at
 
+        if diff.days > 0:
+            return f"{diff.days}日前"
+        else:
+            hours = diff.seconds // 3600
+            if hours > 0:
+                return f"{hours}時間前"
+            else:
+                minutes = diff.seconds // 60
+                return f"{minutes}分前"
 
 
 

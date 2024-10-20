@@ -1,26 +1,72 @@
 {% extends 'base.html' %}
 
+{% block extra_css %}
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-  <h1 class="mb-3">{{ project.name }}</h1>
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5 class="card-title">プロジェクト詳細</h5>
-      <p class="card-text"><strong>説明:</strong> {{ project.description }}</p>
-      <p class="card-text"><strong>就業期間:</strong> {{ project.start_date|date:"y/m/d" }} ～ {% if project.end_date %}{{ project.end_date|date:"y/m/d" }}{% else %}未定{% endif %}</p>
-      <p class="card-text"><strong>勤務時間:</strong> {{ project.time|default:"未定" }}</p>
-      <p class="card-text"><strong>勤務場所:</strong> {{ project.address|default:"未定" }}</p>
-      <p class="card-text"><strong>状態:</strong> <span class="badge badge-secondary">{{ project.get_status_display }}</span></p>
+  <h1 class="mb-3">案件詳細</h1>
+  <div class="row">
+    <div class="col-12 mb-3">
+      <a href="{% url 'project_update' project.pk %}" class="btn btn-secondary"><i class="fas fa-edit"></i>編集</a>
+      <a href="{% url 'project_delete' project.pk %}" class="btn btn-danger mx-2"><i class="fas fa-trash"></i>削除</a>
+      <a href="{% url 'project_list' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i>一覧に戻る</a>
+      <div class="float-right border border-secondary rounded bg-white py-1 px-2 font-weight-bold" style="border-width: 2px !important;">
+        {{ project.get_status_display }}
+      </div>
+    </div>
+    <div class="col-12 px-2">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start border-bottom">
+            <h3 class="card-title text-truncate font-weight-bold" title="{{ project.name }}">{{ project.name }}</h3>
+            <div class="text-nowrap">{{ project.time_since_created }}</div>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-0 card-text"><strong>説明: <br></strong><div class="px-2">{{ project.description }}</div></li>
+            <li class="list-group-item px-0 card-text"><strong>必須スキル: </strong>{{ project.must_skill|default:"None" }}</li>
+            <li class="list-group-item px-0 card-text"><strong>尚可スキル: </strong>{{ project.better_skill|default:"None" }}</li>
+            <li class="list-group-item px-0 card-text"><strong>勤務時間: </strong>{{ project.project_period|default:"None" }}</li>
+            <li class="list-group-item px-0 card-text"><strong>業務時間: </strong>{{ project.time|default:"None" }}</li>
+            <li class="list-group-item px-0 card-text"><strong>勤務地: </strong>{{ project.address|default:"不明" }}</li>
+            <li class="list-group-item px-0 card-text"><strong>テレワーク: </strong>{% if project.is_telework %}有り{% else %}無し{% endif %}</li>
+          </ul>
+          <div id="map"></div>
+        </div>
+      </div>
     </div>
   </div>
-  <div>
-    <a href="{% url 'project_update' project.pk %}" class="btn btn-secondary">
-      <i class="fas fa-edit"></i> 編集
-    </a>
-    <a href="{% url 'project_delete' project.pk %}" class="btn btn-danger">
-      <i class="fas fa-trash"></i> 削除
-    </a>
-    <a href="{% url 'project_list' %}" class="btn btn-primary">
-      <i class="fas fa-arrow-left"></i> 一覧に戻る
-    </a>
-  </div>
 {% endblock %}
+
+{% block extra_js %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
+<script>
+    function initMap() {
+        var address = "{{ project.address }}";
+        var geocoder = new google.maps.Geocoder();
+        
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: results[0].geometry.location
+                });
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                console.error('Geocode was not successful for the following reason: ' + status);
+                document.getElementById('map').innerHTML = 'マップを表示できません。';
+            }
+        });
+    }
+</script>
+{% endblock %}
+
+

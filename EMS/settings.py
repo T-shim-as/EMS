@@ -16,17 +16,40 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-b!-8r=mp9q1hk0mgb^za*btzy*%$w!w#c2ce8%x+0vm+_#d!s8'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+GOOGLE_MAPS_API_KEY = 'AIzaSyA2ABvVexb4E4fxqh_awBD0kw_ofZKyrZ0'
 
-ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com', 'tshim.pythonanywhere.com']
+# SECURITY WARNING: don't run with debug turned on in production!
+try:
+    from .local_settings import *
+    DEBUG = True
+    ALLOWED_HOSTS = ['localhost']
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+except:
+    DEBUG = False
+    ALLOWED_HOSTS = ['.pythonanywhere.com', 'tshim.pythonanywhere.com']
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'tshim$default',
+            'USER': 'tshim',
+            'PASSWORD': 'portfolio',
+            'HOST': 'tshim.mysql.pythonanywhere-services.com',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            }
+        }
+    }
 
 # asdf
 # Application definition
@@ -98,7 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -107,14 +129,13 @@ LANGUAGE_CODE = 'ja' #'en-us'
 TIME_ZONE = 'Asia/Tokyo' #'UTC'
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # CSRF_COOKIE_SECUREをTrueにすることで、誤ってHTTPによりクッキーを送信してしまうのを防ぎます。
 CSRF_COOKIE_SECURE = True
@@ -126,31 +147,8 @@ SESSION_COOKIE_SECURE = True
 from django.core.management.utils import get_random_secret_key
 SECRET_KEY = get_random_secret_key()
 
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-try:
-    from .local_settings import *
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-except:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tshim$default',
-            'USER': 'tshim',
-            'PASSWORD': 'portfolio',
-            'HOST': 'tshim.mysql.pythonanywhere-services.com',
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            }
-        }
-    }

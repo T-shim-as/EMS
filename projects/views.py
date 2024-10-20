@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.conf import settings
 from .models import Project
 from .forms import ProjectForm, ProjectStatusForm
 
@@ -27,6 +28,11 @@ class ProjectListView(ListView):
 class ProjectDetailView(DetailView):
     model = Project
     template_name = 'projects/project_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['google_maps_api_key'] = settings.GOOGLE_MAPS_API_KEY
+        return context
 
 class ProjectCreateView(CreateView):
     model = Project

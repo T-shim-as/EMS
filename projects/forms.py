@@ -9,17 +9,27 @@ class ProjectForm(forms.ModelForm):
             'description',
             'must_skill',
             'better_skill',
-            'start_date',
-            'end_date',
+            'project_period',
             'work_time',
             'address',
-            'status'
+            'is_telework',
+            'status',
             ]
         widgets = {
-            'start_date': forms.DateInput(attrs={'type': 'date'}),
-            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'is_telework': forms.CheckboxInput(),
+            'description': forms.Textarea(attrs={'rows': 3}),
         }
-
+        labels = {
+            'name':'案件名',
+            'description':'案件詳細',
+            'must_skill':'必須スキル',
+            'better_skill':'尚可スキル',
+            'project_period':'業務期間',
+            'work_time':'勤務時間',
+            'address':'勤務地',
+            'is_telework':'テレワーク有',
+            'status':'状態',
+        }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.instance.pk:  # 新規作成の場合

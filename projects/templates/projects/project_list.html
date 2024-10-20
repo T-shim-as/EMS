@@ -1,51 +1,86 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+  .my-truncate3 {
+    overflow: hidden;
+    display: -webkit-box; /* 必須 */
+    -webkit-box-orient: vertical; /* 必須 */
+    -webkit-line-clamp: 3; /* 行数を制限 */
+    height: 5.5em;
+    border: 0;
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-  <div class="row px-1">
-    <h1 class="col-6 mb-3">案件一覧</h1>
-    <div class="col-6 mt-3">
-      <form method="get" class="form-inline justify-content-end">
-        <select name="status" class="form-control mr-1">
-          <option value=""></option>
-          {% for value, label in status_choices %}
-            <option value="{{ value }}" {% if value == selected_status %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-        <button type="submit" class="btn btn-secondary">検索</button>
-      </form>
-    </div>
-  </div>
-  <div class="list-group">
-    {% for project in projects %}
-      <div class="list-group-item mb-2">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-2">
-            <a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a>
-          </h5>
-          <small>期間：{{ project.start_date|date:"y/m/d" }} ～ {% if project.end_date %}{{ project.end_date|date:"y/m/d" }}{% else %}未定{% endif %}</small>
-        </div>
-        <p class="mb-1">{{ project.description|truncatewords:20 }}</p>
-        <form class="status-form float-right" data-project-id="{{ project.pk }}">
-          {% csrf_token %}
-          <label for="status-{{ project.pk }}">状態:</label>
-          <select id="status-{{ project.pk }}" name="status" class="form-control-sm">
-            {% for value, label in project.status_choices %}
-              <option value="{{ value }}" {% if value == project.status %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-        </form>
-      </div>
-    {% empty %}
-      <div class="list-group-item mb-2">
-        <p>案件がありません。</p>
-      </div>
-    {% endfor %}
-  </div>
-  <div class="float-right mr-1">
+<h1 class="mb-3">案件一覧</h1>
+<div class="row mb-3">
+  <div class="col-6">
     <a href="{% url 'project_create' %}" class="btn btn-primary">
-      <i class="fas fa-plus"></i> 案件追加
+      <i class="fas fa-plus"></i> 新規案件追加
     </a>
   </div>
+  <div class="col-6 mt-auto">
+    <form method="get" class="form-inline justify-content-end">
+      <select name="status" class="form-control form-control-sm mr-2" style="max-width: 100px;">
+        <option value=""></option>
+        {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if value == selected_status %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-secondary btn-sm">絞り込み</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  {% for project in projects %}
+  <div class="col-md-6 col-xl-4 mb-4 px-2">
+    <div class="card h-100">
+      <div class="card-body d-flex flex-column p-4">
+        <div class="d-flex justify-content-between align-items-start border-bottom">
+          <h4 class="card-title text-truncate font-weight-bold" title="{{ project.name }}">
+            <a href="{% url 'project_detail' project.pk %}" class="text-dark">{{ project.name }}</a>
+          </h4>
+          <small class="text-muted text-nowrap">{{ project.time_since_created }}</small>
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item px-0 my-truncate3" ><strong>詳細： </strong>{{ project.description}}</li>
+          <li class="list-group-item px-0 text-truncate mt-2 border-top"><strong>必須スキル: </strong>{{ project.must_skill|default:"None" }}</li>
+          <li class="list-group-item px-0 text-truncate"><strong>尚可スキル: </strong>{{ project.better_skill|default:"None" }}</li>
+          <li class="list-group-item px-0 text-truncate">
+            <strong>勤務期間: </strong>{{ project.project_period|default:"None" }}<br>
+            <strong>業務時間: </strong>{{ project.time|default:"None" }}<br>
+            <strong>勤務地: </strong>
+            {% if project.is_telework %}
+              <i class="fas fa-laptop-house"></i>
+            {% endif %}
+            {{ project.address }}
+          </li>
+          <li class="list-group-item p-0 pt-3">
+            <form class="status-form float-right" data-project-id="{{ project.pk }}">
+              {% csrf_token %}
+              <label for="status-{{ project.pk }}">状態:</label>
+              <select id="status-{{ project.pk }}" name="status" class="form-control-sm">
+                {% for value, label in project.status_choices %}
+                <option value="{{ value }}" {% if value == project.status %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col">
+      <p>該当する案件がありません。</p>
+  </div>
+  {% endfor %}
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
