@@ -1,1 +1,1 @@
-GOOGLE_MAPS_API_KEY = 'google_maps_api_key'
+GOOGLE_MAPS_API_KEY = 'AIzaSyA2ABvVexb4E4fxqh_awBD0kw_ofZKyrZ0'

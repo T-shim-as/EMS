@@ -3,3 +3,4 @@ node_modules/
 .DS_Store
 
 local_settings.py
+unshere_settings.py

@@ -22,7 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-b!-8r=mp9q1hk0mgb^za*btzy*%$w!w#c2ce8%x+0vm+_#d!s8'
 
-from .unshere_setting import *
+# google map API keyは公開できないので非共有ファイルに格納する。
+GOOGLE_MAPS_API_KEY = 'google_maps_api_key'
+try:
+    from .unshere_settings import *
+except:
+    pass
 
 # SECURITY WARNING: don't run with debug turned on in production!
 try:
