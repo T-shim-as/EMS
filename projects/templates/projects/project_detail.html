@@ -2,9 +2,17 @@
 
 {% block extra_css %}
 <style>
+    /* 地図の高さと幅を設定 */
     #map {
         height: 400px;
         width: 100%;
+    }
+    /* ルート情報のスタイルを設定 */
+    #route-info {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
     }
 </style>
 {% endblock %}
@@ -36,7 +44,19 @@
             <li class="list-group-item px-0 card-text"><strong>勤務地: </strong>{{ project.address|default:"不明" }}</li>
             <li class="list-group-item px-0 card-text"><strong>テレワーク: </strong>{% if project.is_telework %}有り{% else %}無し{% endif %}</li>
           </ul>
-          <div id="map"></div>
+          <div id="map" class="mb-3"></div>
+          
+          <div class="form-group">
+            <select id="travel-mode" class="form-control">
+              <option value="">目的地を表示</option>
+              <option value="TRANSIT">*公共交通機関でのルート</option>
+              <option value="DRIVING">車でのルート</option>
+              <option value="WALKING">徒歩でのルート</option>
+              <option value="BICYCLING">自転車でのルート</option>
+            </select>
+          </div>
+
+          <div id="route-info" style="display: none;"></div>
         </div>
       </div>
     </div>
@@ -44,29 +64,104 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
 <script>
-    function initMap() {
-        var address = "{{ project.address }}";
-        var geocoder = new google.maps.Geocoder();
-        
-        geocoder.geocode({'address': address}, function(results, status) {
-            if (status === 'OK') {
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
-                    center: results[0].geometry.location
-                });
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location
-                });
-            } else {
-                console.error('Geocode was not successful for the following reason: ' + status);
-                document.getElementById('map').innerHTML = 'マップを表示できません。';
-            }
-        });
+  let map, directionsService, directionsRenderer, marker;
+  const projectAddress = "{{ project.address }}";
+  const userAddress = "吉祥寺駅";//"{{ request.user.account.address }}";
+
+  function initMap() {
+      directionsService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer();
+      
+      var geocoder = new google.maps.Geocoder();
+      
+      geocoder.geocode({'address': projectAddress}, function(results, status) {
+          if (status === 'OK') {
+              map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 15,
+                  center: results[0].geometry.location
+              });
+              marker = new google.maps.Marker({
+                  map: map,
+                  position: results[0].geometry.location
+              });
+              directionsRenderer.setMap(map);
+          } else {
+              console.error('Geocode was not successful for the following reason: ' + status);
+              document.getElementById('map').innerHTML = 'マップを表示できません。';
+          }
+      });
+
+      document.getElementById('travel-mode').addEventListener('change', handleTravelModeChange);
+  }
+
+  function handleTravelModeChange() {
+      const selectedMode = document.getElementById('travel-mode').value;
+      if (selectedMode === "") {
+          resetMap();
+      } else {
+          calculateAndDisplayRoute(selectedMode);
+      }
+  }
+
+  function resetMap() {
+      directionsRenderer.setMap(null);
+      marker.setMap(map);
+      map.setCenter(marker.getPosition());
+      map.setZoom(15);
+      document.getElementById('route-info').style.display = 'none';
+  }
+
+  function calculateAndDisplayRoute(selectedMode) {
+      marker.setMap(null);
+      directionsRenderer.setMap(map);
+      directionsService.route(
+          {
+              origin: userAddress,
+              destination: projectAddress,
+              travelMode: google.maps.TravelMode[selectedMode]
+          },
+          (response, status) => {
+              if (status === "OK") {
+                  directionsRenderer.setDirections(response);
+                  const route = response.routes[0];
+                  const duration = route.legs[0].duration.text;
+                  const distance = route.legs[0].distance.text;
+                  let routeInfo = `
+                      <strong>移動時間:</strong> ${duration}<br>
+                      <strong>距離:</strong> ${distance}<br>
+                      <strong>移動手段:</strong> ${getTravelModeText(selectedMode)}
+                  `;
+                  document.getElementById('route-info').innerHTML = routeInfo;
+                  document.getElementById('route-info').style.display = 'block';
+              } else {
+                  console.error("Directions request failed due to " + status);
+                  document.getElementById('route-info').innerHTML = "ルートを取得できませんでした。エラー: " + status;
+                    if (selectedMode === 'TRANSIT') document.getElementById('route-info').innerHTML += `<br><small>*2024/10時点ではGoogle Map APIは日本の公共交通機関のルートをサポートしていません。<br>他のルートを表示するか、<a href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(userAddress)}&destination=${encodeURIComponent(projectAddress)}&travelmode=transit" target="_blank">Google Map</a>から経路を確認してください。</small>`;  
+                  document.getElementById('route-info').style.display = 'block';
+              }
+          }
+      );
+  }
+  
+  function getTravelModeText(mode) {
+        switch(mode) {
+            case 'DRIVING': return '車';
+            case 'TRANSIT': return '公共交通機関';
+            case 'WALKING': return '徒歩';
+            case 'BICYCLING': return '自転車';
+            default: return mode;
+        }
     }
+
+  function loadGoogleMapsAPI() {
+      const script = document.createElement('script');
+      script.src = "https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initMap";
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadGoogleMapsAPI);
 </script>
 {% endblock %}
-
-

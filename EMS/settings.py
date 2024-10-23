@@ -29,6 +29,7 @@ except:
     GOOGLE_MAPS_API_KEY = 'google_maps_api_key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Attempt to import local settings and set development configuration
 try:
     from .local_settings import *
     DEBUG = True
@@ -39,6 +40,7 @@ try:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+# If local settings import fails, set production configuration
 except:
     DEBUG = False
     ALLOWED_HOSTS = ['.pythonanywhere.com', 'tshim.pythonanywhere.com']
@@ -58,6 +60,7 @@ except:
 # asdf
 # Application definition
 
+# List of installed Django apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -74,9 +77,11 @@ INSTALLED_APPS = [
     # 'skills',
 ]
 
+# Crispy forms configuration
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
+# Middleware configuration
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,6 +94,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'EMS.urls'
 
+# Template configuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -141,18 +147,18 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CSRF_COOKIE_SECUREをTrueにすることで、誤ってHTTPによりクッキーを送信してしまうのを防ぎます。
+# Security settings for CSRF and session cookies
 CSRF_COOKIE_SECURE = True
-
-# SESSION_COOKIE_SECUREをTrueにすることで、誤ってHTTPによりセッションクッキーを送信してしまうのを防ぎます。
 SESSION_COOKIE_SECURE = True
 
 # シークレットキーを隠す
 from django.core.management.utils import get_random_secret_key
 SECRET_KEY = get_random_secret_key()
 
+# Static files configuration
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# Media files configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
