@@ -17,12 +17,12 @@
 {% block content %}
 <h1 class="mb-3">案件一覧</h1>
 <div class="row mb-3">
-  <div class="col-6">
+  <div class="col-6 pl-2">
     <a href="{% url 'project_create' %}" class="btn btn-primary">
       <i class="fas fa-plus"></i> 新規案件追加
     </a>
   </div>
-  <div class="col-6 mt-auto">
+  <div class="col-6 pl-2 mt-auto">
     <form method="get" class="form-inline justify-content-end">
       <select name="status" class="form-control form-control-sm mr-2" style="max-width: 100px;">
         <option value=""></option>
