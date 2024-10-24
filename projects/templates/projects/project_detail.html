@@ -39,8 +39,8 @@
             <li class="list-group-item px-0 card-text"><strong>説明: <br></strong><div class="px-2">{{ project.description }}</div></li>
             <li class="list-group-item px-0 card-text"><strong>必須スキル: </strong>{{ project.must_skill|default:"None" }}</li>
             <li class="list-group-item px-0 card-text"><strong>尚可スキル: </strong>{{ project.better_skill|default:"None" }}</li>
-            <li class="list-group-item px-0 card-text"><strong>勤務時間: </strong>{{ project.project_period|default:"None" }}</li>
-            <li class="list-group-item px-0 card-text"><strong>業務時間: </strong>{{ project.time|default:"None" }}</li>
+            <li class="list-group-item px-0 card-text"><strong>期間: </strong>{{ project.project_period|default:"None" }}</li>
+            <li class="list-group-item px-0 card-text"><strong>時間: </strong>{{ project.work_time|default:"None" }}</li>
             <li class="list-group-item px-0 card-text"><strong>勤務地: </strong>{{ project.address|default:"不明" }}</li>
             <li class="list-group-item px-0 card-text"><strong>テレワーク: </strong>{% if project.is_telework %}有り{% else %}無し{% endif %}</li>
           </ul>

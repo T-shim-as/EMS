@@ -51,8 +51,8 @@
           <li class="list-group-item px-0 text-truncate mt-2 border-top"><strong>必須スキル: </strong>{{ project.must_skill|default:"None" }}</li>
           <li class="list-group-item px-0 text-truncate"><strong>尚可スキル: </strong>{{ project.better_skill|default:"None" }}</li>
           <li class="list-group-item px-0 text-truncate">
-            <strong>勤務期間: </strong>{{ project.project_period|default:"None" }}<br>
-            <strong>業務時間: </strong>{{ project.time|default:"None" }}<br>
+            <strong>期間: </strong>{{ project.project_period|default:"None" }}<br>
+            <strong>時間: </strong>{{ project.work_time|default:"None" }}<br>
             <strong>勤務地: </strong>
             {% if project.is_telework %}
               <i class="fas fa-laptop-house"></i>
